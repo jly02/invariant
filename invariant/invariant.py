@@ -1,5 +1,5 @@
-from constants import FREE
-from exceptions import PreconditionNotMetError
+from .constants import FREE
+from .exceptions import PreconditionNotMetError
 
 
 def pre(*conds):
@@ -21,11 +21,3 @@ def pre(*conds):
         return wrapper
 
     return decorator
-
-
-@pre(lambda l: l != None, lambda ele: FREE)
-def appendToList(l: list[any], ele: any):
-    l.append(ele)
-
-
-appendToList(None, None)
