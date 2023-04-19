@@ -1,4 +1,3 @@
-from .constants import FREE
 from .exceptions import PreconditionNotMetError
 
 
