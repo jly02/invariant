@@ -23,6 +23,7 @@ class PreconditionNotMetError(Exception):
 
     Attributes:
         failed_pre -- list of precondition indices that failed
+        func -------- the failing function
     """
 
     def __init__(self, failed_pre: list[tuple], func) -> None:
@@ -30,4 +31,17 @@ class PreconditionNotMetError(Exception):
         message = f"The following preconditions were not met for function '{func.__name__}':\n"
         for idx, arg in failed_pre:
             message += f"       {pre_cons[idx]} FAILED, got: {arg}\n"
+        super().__init__(message)
+
+
+class MissingPreconditionError(Exception):
+    """Exception raised when @pre is used without providing
+    preconditions for all given parameters.
+
+    Attributes:
+        func -- the failing function
+    """
+
+    def __init__(self, func) -> None:
+        message = f"Missing one or more preconditions in function '{func.__name__}'"
         super().__init__(message)

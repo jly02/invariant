@@ -1,9 +1,31 @@
-from .exceptions import PreconditionNotMetError
+from typing import Callable
+
+from .exceptions import MissingPreconditionError, PreconditionNotMetError
 
 
-def pre(*conds):
+def pre(*conds: list[Callable]):
+    """Decorator tag for defining preconditions on an
+    arbitrary function. There must be as many preconditions
+    given as there are parameters in a function.
+
+    Args:
+        *conds: the preconditions to be checked, in the form
+            lambda var: <condition>
+
+    Raises:
+        MissingPreconditionError: if there are any function
+            parameters that are not given a precondition
+        PreconditionNotFoundError: if any preconditions are
+            not met before calling the function
+    """
+
     def decorator(func):
         def wrapper(*args, **kwargs):
+            # check that preconditions and args match in length
+            if len(conds) != len(*args):
+                raise MissingPreconditionError(func)
+
+            # list of all preconditions failed, if there are any
             failed_pre: list[tuple] = []
             pre_con_idx = 0
             for cond, arg in zip(conds, args):
