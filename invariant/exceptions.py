@@ -22,8 +22,8 @@ class PreconditionNotMetError(Exception):
     """Exception raised when a listed precondition is not met.
 
     Attributes:
-        failed_pre -- list of precondition indices that failed
-        func -------- the failing function
+        failed_pre: list of precondition indices that failed
+        func: the failing function
     """
 
     def __init__(self, failed_pre: list[tuple], func) -> None:
