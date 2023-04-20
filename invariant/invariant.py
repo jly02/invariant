@@ -22,7 +22,7 @@ def pre(*conds: list[Callable]):
     def decorator(func):
         def wrapper(*args, **kwargs):
             # check that preconditions and args match in length
-            if len(conds) != len(*args):
+            if len(conds) != len(args):
                 raise MissingPreconditionError(func)
 
             # list of all preconditions failed, if there are any
