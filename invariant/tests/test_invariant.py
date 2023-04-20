@@ -31,7 +31,7 @@ class TestPre(unittest.TestCase):
     """
 
     def testNoFailedCondition(self):
-        self.assertEquals(add(1, 1), 2)
+        self.assertEqual(add(1, 1), 2)
 
     def testSingleCondition(self):
         self.assertRaises(PreconditionNotMetError, add, -1, 1)
@@ -43,7 +43,7 @@ class TestPre(unittest.TestCase):
         self.assertRaises(PreconditionNotMetError, appendToList, None, None)
 
     def testNoFailedNonNumericalCondition(self):
-        self.assertEquals(appendToList([], 1), [1])
+        self.assertEqual(appendToList([], 1), [1])
 
 
 if __name__ == "__main__":
