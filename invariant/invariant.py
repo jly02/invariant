@@ -1,4 +1,5 @@
 from typing import Callable
+from inspect import signature
 
 from .exceptions import MissingPreconditionError, PreconditionNotMetError
 
@@ -21,14 +22,19 @@ def pre(*conds: list[Callable[[any], bool]]):
 
     def decorator(func):
         def wrapper(*args, **kwargs):
+            if list(signature(func).parameters.keys())[0] == "self":
+                trimmed_args = args[1:]
+            else:
+                trimmed_args = args
+
             # check that preconditions and args match in length
-            if len(conds) != len(args):
+            if len(conds) < len(trimmed_args):
                 raise MissingPreconditionError(func)
 
             # list of all preconditions failed, if there are any
             failed_pre: list[tuple] = []
             pre_con_idx = 0
-            for cond, arg in zip(conds, args):
+            for cond, arg in zip(conds, trimmed_args):
                 if not cond(arg):
                     failed_pre.append((pre_con_idx, arg))
 

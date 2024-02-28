@@ -10,6 +10,33 @@ def testVersion():
     assert __version__ == "0.1.0"
 
 
+class SimpleDB:
+    """Simple key-value store to test class method invariants.
+    """
+    def __init__(self):
+        self.data = {}
+
+    @pre(lambda key: key != None, lambda value: const.FREE)
+    def set(self, key, value) -> None:
+        self.data[key] = value
+
+    @pre(lambda key: key != None)
+    def get(self, key) -> None:
+        return self.data.get(key)
+
+    @pre(lambda key: key != None)
+    def delete(self, key) -> any:
+        if key in self.data:
+            del self.data[key]
+        else:
+            print("Key not found.")
+
+    def display(self) -> None:
+        print("Database Contents:")
+        for key, value in self.data.items():
+            print(f"{key}: {value}")
+
+
 @pre(lambda x: x > 0, lambda y: y > 0)
 def add(x: int, y: int):
     """Numerical test function, guarantee inputs are positive."""
@@ -44,6 +71,11 @@ class TestPre(unittest.TestCase):
 
     def testNoFailedNonNumericalCondition(self):
         self.assertEqual(appendToList([], 1), [1])
+
+    def testDBSetGood(self):
+        db = SimpleDB()
+        db.set("name", "Bob")
+        self.assertEqual(db.get("name"), "Bob")
 
 
 if __name__ == "__main__":
