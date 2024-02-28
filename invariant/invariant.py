@@ -3,14 +3,14 @@ from typing import Callable
 from .exceptions import MissingPreconditionError, PreconditionNotMetError
 
 
-def pre(*conds: list[Callable]):
+def pre(*conds: list[Callable[[any], bool]]):
     """Decorator tag for defining preconditions on an
     arbitrary function. There must be as many preconditions
     given as there are parameters in a function.
 
     Args:
         *conds: the preconditions to be checked, in the form
-            lambda var: <condition>
+            `lambda var: <condition>`
 
     Raises:
         MissingPreconditionError: if there are any function
